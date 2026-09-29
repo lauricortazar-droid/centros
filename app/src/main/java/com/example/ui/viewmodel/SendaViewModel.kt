@@ -176,6 +176,12 @@ class SendaViewModel(
         }
     }
 
+    fun deleteExpediente(expediente: ExpedienteEntity) {
+        viewModelScope.launch {
+            repository.deleteExpediente(expediente)
+        }
+    }
+
     fun addClinicalRecord(record: ClinicalRecordEntity) {
         viewModelScope.launch {
             repository.insertClinicalRecord(record)

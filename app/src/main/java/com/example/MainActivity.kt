@@ -216,6 +216,9 @@ fun SendaApp(viewModel: SendaViewModel) {
                             onToggleMedication = { viewModel.toggleMedicationTaken(it) },
                             onAddClinicalRecord = { viewModel.addClinicalRecord(it) },
                             onAddMedication = { viewModel.addMedication(it) },
+                            expedientes = expedientes,
+                            onSaveExpediente = { viewModel.addOrUpdateExpediente(it) },
+                            onDeleteExpediente = { viewModel.deleteExpediente(it) },
                             modifier = Modifier.padding(innerPadding)
                         )
                     }

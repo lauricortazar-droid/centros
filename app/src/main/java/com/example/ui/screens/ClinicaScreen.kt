@@ -38,6 +38,9 @@ fun ClinicaScreen(
     onToggleMedication: (MedicationEntity) -> Unit,
     onAddClinicalRecord: (ClinicalRecordEntity) -> Unit,
     onAddMedication: (MedicationEntity) -> Unit,
+    expedientes: List<ExpedienteEntity> = emptyList(),
+    onSaveExpediente: (ExpedienteEntity) -> Unit = {},
+    onDeleteExpediente: (ExpedienteEntity) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var showAddNoteDialog by remember { mutableStateOf(false) }
@@ -45,6 +48,7 @@ fun ClinicaScreen(
 
     val subTabs = listOf(
         "TODOS" to "Todos",
+        "EXPEDIENTES" to "Expedientes Clínicos (${expedientes.size})",
         "MEDICINA" to "Medicina",
         "PSICOLOGIA" to "Psicología",
         "PSIQUIATRIA" to "Psiquiatría",
@@ -56,24 +60,26 @@ fun ClinicaScreen(
 
     Scaffold(
         floatingActionButton = {
-            Column(horizontalAlignment = Alignment.End) {
-                SmallFloatingActionButton(
-                    onClick = { showAddMedDialog = true },
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier.testTag("add_medication_fab")
-                ) {
-                    Icon(Icons.Default.Medication, contentDescription = "Nuevo Medicamento")
+            if (selectedSubTab != "EXPEDIENTES") {
+                Column(horizontalAlignment = Alignment.End) {
+                    SmallFloatingActionButton(
+                        onClick = { showAddMedDialog = true },
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.testTag("add_medication_fab")
+                    ) {
+                        Icon(Icons.Default.Medication, contentDescription = "Nuevo Medicamento")
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ExtendedFloatingActionButton(
+                        onClick = { showAddNoteDialog = true },
+                        icon = { Icon(Icons.Default.PostAdd, contentDescription = null) },
+                        text = { Text("Nota / Incidente") },
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.testTag("add_clinical_record_fab")
+                    )
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                ExtendedFloatingActionButton(
-                    onClick = { showAddNoteDialog = true },
-                    icon = { Icon(Icons.Default.PostAdd, contentDescription = null) },
-                    text = { Text("Nota / Incidente") },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.testTag("add_clinical_record_fab")
-                )
             }
         },
         modifier = modifier
@@ -115,11 +121,20 @@ fun ClinicaScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-                contentPadding = PaddingValues(bottom = 80.dp),
-                modifier = Modifier.fillMaxSize()
-            ) {
+            if (selectedSubTab == "EXPEDIENTES") {
+                ExpedientesMedicosScreen(
+                    expedientes = expedientes,
+                    residents = residents,
+                    onSaveExpediente = onSaveExpediente,
+                    onDeleteExpediente = onDeleteExpediente,
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(14.dp),
+                    contentPadding = PaddingValues(bottom = 80.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
                 // Treatment Phases Overview if on TODOS or TRATAMIENTO
                 if (selectedSubTab == "TODOS" || selectedSubTab == "TRATAMIENTO") {
                     item {
@@ -343,6 +358,7 @@ fun ClinicaScreen(
                         }
                     }
                 }
+            }
             }
         }
     }
