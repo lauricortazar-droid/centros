@@ -19,15 +19,17 @@ import kotlinx.coroutines.launch
         AgendaEventEntity::class,
         StaffMemberEntity::class,
         OperationLogEntity::class,
-        ExpedienteEntity::class
+        ExpedienteEntity::class,
+        AdministrativeRecordEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun sendaDao(): SendaDao
     abstract fun expedienteDao(): ExpedienteDao
+    abstract fun administrativeRecordDao(): AdministrativeRecordDao
 
     companion object {
         @Volatile
@@ -74,8 +76,12 @@ abstract class AppDatabase : RoomDatabase() {
                     InitialData.agendaEvents.forEach { dao.insertAgendaEvent(it) }
                     InitialData.staff.forEach { dao.insertStaff(it) }
                     InitialData.operationLogs.forEach { dao.insertOperationLog(it) }
+                    
                     val expDao = database.expedienteDao()
                     InitialData.expedientes.forEach { expDao.insertExpediente(it) }
+
+                    val adminDao = database.administrativeRecordDao()
+                    InitialData.administrativeRecords.forEach { adminDao.insertRecord(it) }
                 }
             }
         }

@@ -7,13 +7,14 @@ import com.example.data.auth.AuthUser
 import com.example.data.auth.FirebaseAuthService
 import com.example.data.auth.UserRole
 import com.example.data.model.*
+import com.example.data.repository.ISendaRepository
 import com.example.data.repository.SendaRepository
 import com.example.ui.navigation.MainSection
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class SendaViewModel(
-    private val repository: SendaRepository,
+    private val repository: ISendaRepository,
     private val authService: FirebaseAuthService
 ) : ViewModel() {
 
@@ -122,6 +123,9 @@ class SendaViewModel(
     val operationLogs: StateFlow<List<OperationLogEntity>> = repository.allOperationLogs
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val administrativeRecords: StateFlow<List<AdministrativeRecordEntity>> = repository.allAdministrativeRecords
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     // Actions: Resident
     fun addOrUpdateResident(resident: ResidentEntity) {
         viewModelScope.launch {
@@ -221,10 +225,26 @@ class SendaViewModel(
             repository.insertStaff(staff)
         }
     }
+
+    fun addOrUpdateAdministrativeRecord(record: AdministrativeRecordEntity) {
+        viewModelScope.launch {
+            if (record.id == 0) {
+                repository.insertAdministrativeRecord(record)
+            } else {
+                repository.updateAdministrativeRecord(record)
+            }
+        }
+    }
+
+    fun deleteAdministrativeRecord(record: AdministrativeRecordEntity) {
+        viewModelScope.launch {
+            repository.deleteAdministrativeRecord(record)
+        }
+    }
 }
 
 class SendaViewModelFactory(
-    private val repository: SendaRepository,
+    private val repository: ISendaRepository,
     private val authService: FirebaseAuthService
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

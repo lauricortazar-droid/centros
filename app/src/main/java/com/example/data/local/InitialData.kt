@@ -450,4 +450,63 @@ object InitialData {
             notasIngreso = "En proceso de entrevista inicial y recepción de analíticas sanguíneas."
         )
     )
+
+    val administrativeRecords = listOf(
+        AdministrativeRecordEntity(
+            id = 1,
+            folio = "ADM-CNT-2024-001",
+            category = "CONTRATO_INGRESO",
+            residentId = 1,
+            residentName = "Rodrigo Morales Luna",
+            title = "Contrato de Prestación de Servicios Residenciales",
+            description = "Contrato formal de 180 días que ampara estancia, alimentación, atención médica, psiquiátrica y consejería.",
+            responsibleStaff = "Lic. Carlos Méndez (Director)",
+            date = "2024-06-15",
+            status = "FIRMADO",
+            documentNumber = "NOM-028-SND-01",
+            notes = "Firmado en original por el residente y su tutora Sra. Elena Morales."
+        ),
+        AdministrativeRecordEntity(
+            id = 2,
+            folio = "ADM-RES-2024-001",
+            category = "RESGUARDO_VALORES",
+            residentId = 1,
+            residentName = "Rodrigo Morales Luna",
+            title = "Inventario y Resguardo de Pertenencias y Valores",
+            description = "Custodia de teléfono móvil, cartera con identificaciones y reloj de pulso en caja de seguridad institucional.",
+            responsibleStaff = "Padrino Roberto Silva (Consejero)",
+            date = "2024-06-15",
+            status = "VIGENTE",
+            documentNumber = "VAL-2024-88",
+            notes = "Artículos inventariados y sellados en bolsa numerada #088."
+        ),
+        AdministrativeRecordEntity(
+            id = 3,
+            folio = "ADM-CST-2024-002",
+            category = "CONSENTIMIENTO_TUTOR",
+            residentId = 2,
+            residentName = "Alejandro Herrera Gómez",
+            title = "Consentimiento Informado y Carta Compromiso Familiar",
+            description = "Aceptación de reglamento interno, visitas dominicales quincenales y corresponsabilidad económica.",
+            responsibleStaff = "Lic. Carlos Méndez (Director)",
+            date = "2024-08-01",
+            status = "FIRMADO",
+            documentNumber = "NOM-028-SND-02",
+            notes = "Aceptado y firmado por Maricela Gómez (Esposa y tutora legal)."
+        ),
+        AdministrativeRecordEntity(
+            id = 4,
+            folio = "ADM-ACT-2024-003",
+            category = "SUPERVISION_OFICIAL",
+            residentId = null,
+            residentName = "Centro Senda Residencial",
+            title = "Acta de Verificación Sanitaria y Protección Civil",
+            description = "Dictamen favorable de instalaciones, dormitorios, área médica y plan de protección civil anual.",
+            responsibleStaff = "Dr. Armando Valdés Soto",
+            date = "2024-09-10",
+            status = "VIGENTE",
+            documentNumber = "COFEPRIS-PC-2024-541",
+            notes = "Inspección aprobada sin observaciones críticas. Próxima revisión anual Sep 2025."
+        )
+    )
 }

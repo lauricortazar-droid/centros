@@ -35,7 +35,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val database = AppDatabase.getDatabase(this, lifecycleScope)
-        val repository = SendaRepository(database.sendaDao(), database.expedienteDao())
+        val repository = SendaRepository(
+            database.sendaDao(),
+            database.expedienteDao(),
+            database.administrativeRecordDao()
+        )
         val authService = FirebaseAuthService(this)
         val factory = SendaViewModelFactory(repository, authService)
 
@@ -63,6 +67,7 @@ fun SendaApp(viewModel: SendaViewModel) {
     val agendaEvents by viewModel.agendaEvents.collectAsStateWithLifecycle()
     val staffList by viewModel.staffMembers.collectAsStateWithLifecycle()
     val operationLogs by viewModel.operationLogs.collectAsStateWithLifecycle()
+    val administrativeRecords by viewModel.administrativeRecords.collectAsStateWithLifecycle()
 
     val usuariosSubTab by viewModel.usuariosSubTab.collectAsStateWithLifecycle()
     val clinicaSubTab by viewModel.clinicaSubTab.collectAsStateWithLifecycle()
@@ -271,6 +276,8 @@ fun SendaApp(viewModel: SendaViewModel) {
                 MainSection.DOCUMENTOS -> {
                     DocumentosEvidenciasScreen(
                         residents = residents,
+                        administrativeRecords = administrativeRecords,
+                        onSaveAdministrativeRecord = { viewModel.addOrUpdateAdministrativeRecord(it) },
                         isEvidenciasMode = false,
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -279,6 +286,8 @@ fun SendaApp(viewModel: SendaViewModel) {
                 MainSection.EVIDENCIAS -> {
                     DocumentosEvidenciasScreen(
                         residents = residents,
+                        administrativeRecords = administrativeRecords,
+                        onSaveAdministrativeRecord = { viewModel.addOrUpdateAdministrativeRecord(it) },
                         isEvidenciasMode = true,
                         modifier = Modifier.padding(innerPadding)
                     )
